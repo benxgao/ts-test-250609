@@ -5,14 +5,26 @@ import { Modal } from "./modal.tsx";
 describe("Modal", () => {
   it("should open and close", () => {
     render(
-      <Modal open={false} onClose={() => undefined}>
+      <Modal
+        open={false}
+        onClose={() => undefined}
+        setModalOpen={function (): void {
+          throw new Error("Function not implemented.");
+        }}
+      >
         Closed modal
       </Modal>,
     );
     expect(screen.queryByText("Closed modal")).toBeFalsy();
 
     render(
-      <Modal open={true} onClose={() => undefined}>
+      <Modal
+        open
+        onClose={() => undefined}
+        setModalOpen={function (): void {
+          throw new Error("Function not implemented.");
+        }}
+      >
         <div>Open modal</div>
       </Modal>,
     );
