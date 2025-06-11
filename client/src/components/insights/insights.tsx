@@ -5,11 +5,26 @@ import type { Insight } from "../../schemas/insight.ts";
 
 type InsightsProps = {
   insights: Insight[];
+  onRefresh: () => void;
   className?: string;
 };
 
-export const Insights = ({ insights, className }: InsightsProps) => {
-  const deleteInsight = () => undefined;
+export const Insights = ({ insights, onRefresh, className }: InsightsProps) => {
+  const deleteInsight = async (id: number) => {
+    try {
+      const response = await fetch(`/api/insights/${id}`, {
+        method: "DELETE",
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      onRefresh(); // Refresh the insights list after deletion
+    } catch (error) {
+      console.error("Error deleting insight:", error);
+    }
+  };
 
   return (
     <div className={cx(className)}>
@@ -22,10 +37,11 @@ export const Insights = ({ insights, className }: InsightsProps) => {
                 <div className={styles["insight-meta"]}>
                   <span>{brandId}</span>
                   <div className={styles["insight-meta-details"]}>
-                    <span>{date.toString()}</span>
+                    <span>{(date || "").toString()}</span>
                     <Trash2Icon
                       className={styles["insight-delete"]}
-                      onClick={deleteInsight}
+                      onClick={() =>
+                        deleteInsight(id)}
                     />
                   </div>
                 </div>

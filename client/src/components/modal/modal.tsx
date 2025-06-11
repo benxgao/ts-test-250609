@@ -11,6 +11,8 @@ export type ModalProps = {
   open: boolean;
   /** Callback when modal closes */
   onClose(): void;
+  /** Callback when form is submitted */
+  setModalOpen: (open: boolean) => void;
   /** Content of the modal */
   children?: ReactNode;
 };
